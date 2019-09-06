@@ -1,0 +1,93 @@
+﻿@model SocialMediaQuery.Models.UserSearch
+
+@{
+    ViewBag.Title = "User Search Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>User Search</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Search Text
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QueryText)
+        </dd>
+
+        <dt>
+            Created On
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+
+        <dt>
+            Data Provider
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DataSource.Name)
+        </dd>
+
+    </dl>
+
+    <div class="row">
+        <div class="col-lg-3">
+            <span class="pull-left">
+                <input type="button" value="Go to Report" class="btn btn-info btn-flat" onclick="@("window.location.href='" + @Url.Action("RedirectToReport", "Results") + "'");" />
+            </span>
+        </div>
+    </div>
+
+    <br />
+
+    <iframe width="933" height="700" src="https://app.powerbi.com/view?r=eyJrIjoiMGJlYWZhZjgtMmEyYy00MDVmLThkOTktYTQ3MTg2MzlhNjBhIiwidCI6ImI3MWNlN2IzLTQyM2EtNGQ3ZS1hMjcwLWUwZjdjZjIzNDVmZSIsImMiOjh9" frameborder="0" allowFullScreen="true"></iframe>
+
+    <table class="table">
+        <tr>
+            <th>
+                Tweet Id
+            </th>
+            <th>
+                Created On
+            </th>
+            <th>
+                Text
+            </th>
+        </tr>
+
+        @{
+            int counter = 0;
+
+            foreach (var item in Model.SearchResults)
+            {
+                counter = counter + 1;
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TweetId.Value)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedOn)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TweetText)
+                    </td>
+                </tr>
+
+                if (counter == 10)
+                {
+                    break;
+                }
+            }
+        }
+    </table>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

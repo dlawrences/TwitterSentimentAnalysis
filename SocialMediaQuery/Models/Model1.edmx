@@ -1,0 +1,239 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DEV_DB_LICModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DataSource">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SearchResults">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserSearchId" Type="int" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="TweetText" Type="nvarchar" MaxLength="500" />
+          <Property Name="Lang" Type="nvarchar" MaxLength="10" />
+          <Property Name="ResultType" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserId" Type="bigint" />
+          <Property Name="ScreenName" Type="nvarchar" MaxLength="50" />
+          <Property Name="FollowersCount" Type="int" />
+          <Property Name="FriendsCount" Type="int" />
+          <Property Name="FavoritesCount" Type="int" />
+          <Property Name="StatusesCount" Type="int" />
+          <Property Name="RetweetCount" Type="int" />
+          <Property Name="Latitude" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Longitude" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="JsonTweetElement" Type="nvarchar(max)" />
+          <Property Name="TweetId" Type="bigint" />
+        </EntityType>
+        <EntityType Name="UserSearch">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QueryText" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="DataSourceId" Type="int" />
+          <Property Name="JsonResult" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="PK_DataSource_UserSearch">
+          <End Role="DataSource" Type="Self.DataSource" Multiplicity="0..1" />
+          <End Role="UserSearch" Type="Self.UserSearch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DataSource">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserSearch">
+              <PropertyRef Name="DataSourceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PK_Search_SearchResults">
+          <End Role="UserSearch" Type="Self.UserSearch" Multiplicity="0..1" />
+          <End Role="SearchResults" Type="Self.SearchResults" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSearch">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SearchResults">
+              <PropertyRef Name="UserSearchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DEV_DB_LICModelStoreContainer">
+          <EntitySet Name="DataSource" EntityType="Self.DataSource" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SearchResults" EntityType="Self.SearchResults" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserSearch" EntityType="Self.UserSearch" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="PK_DataSource_UserSearch" Association="Self.PK_DataSource_UserSearch">
+            <End Role="DataSource" EntitySet="DataSource" />
+            <End Role="UserSearch" EntitySet="UserSearch" />
+          </AssociationSet>
+          <AssociationSet Name="PK_Search_SearchResults" Association="Self.PK_Search_SearchResults">
+            <End Role="UserSearch" EntitySet="UserSearch" />
+            <End Role="SearchResults" EntitySet="SearchResults" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DEV_DB_LICModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DataSource">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="UserSearches" Relationship="Self.PK_DataSource_UserSearch" FromRole="DataSource" ToRole="UserSearch" />
+        </EntityType>
+        <EntityType Name="SearchResult">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserSearchId" Type="Int32" />
+          <NavigationProperty Name="UserSearch" Relationship="Self.PK_Search_SearchResults" FromRole="SearchResults" ToRole="UserSearch" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="TweetText" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Lang" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ResultType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int64" />
+          <Property Name="ScreenName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FollowersCount" Type="Int32" />
+          <Property Name="FriendsCount" Type="Int32" />
+          <Property Name="FavoritesCount" Type="Int32" />
+          <Property Name="StatusesCount" Type="Int32" />
+          <Property Name="RetweetCount" Type="Int32" />
+          <Property Name="Latitude" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Longitude" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="JsonTweetElement" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TweetId" Type="Int64" />
+        </EntityType>
+        <EntityType Name="UserSearch">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QueryText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="DataSourceId" Type="Int32" />
+          <NavigationProperty Name="DataSource" Relationship="Self.PK_DataSource_UserSearch" FromRole="UserSearch" ToRole="DataSource" />
+          <NavigationProperty Name="SearchResults" Relationship="Self.PK_Search_SearchResults" FromRole="UserSearch" ToRole="SearchResults" />
+          <Property Name="JsonResult" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="PK_DataSource_UserSearch">
+          <End Role="DataSource" Type="Self.DataSource" Multiplicity="0..1" />
+          <End Role="UserSearch" Type="Self.UserSearch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DataSource">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserSearch">
+              <PropertyRef Name="DataSourceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PK_Search_SearchResults">
+          <End Role="UserSearch" Type="Self.UserSearch" Multiplicity="0..1" />
+          <End Role="SearchResults" Type="Self.SearchResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSearch">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SearchResults">
+              <PropertyRef Name="UserSearchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DEV_DB_LICEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DataSources" EntityType="Self.DataSource" />
+          <EntitySet Name="SearchResults" EntityType="Self.SearchResult" />
+          <EntitySet Name="UserSearches" EntityType="Self.UserSearch" />
+          <AssociationSet Name="PK_DataSource_UserSearch" Association="Self.PK_DataSource_UserSearch">
+            <End Role="DataSource" EntitySet="DataSources" />
+            <End Role="UserSearch" EntitySet="UserSearches" />
+          </AssociationSet>
+          <AssociationSet Name="PK_Search_SearchResults" Association="Self.PK_Search_SearchResults">
+            <End Role="UserSearch" EntitySet="UserSearches" />
+            <End Role="SearchResults" EntitySet="SearchResults" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DEV_DB_LICModelStoreContainer" CdmEntityContainer="DEV_DB_LICEntities">
+          <EntitySetMapping Name="DataSources">
+            <EntityTypeMapping TypeName="DEV_DB_LICModel.DataSource">
+              <MappingFragment StoreEntitySet="DataSource">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SearchResults">
+            <EntityTypeMapping TypeName="DEV_DB_LICModel.SearchResult">
+              <MappingFragment StoreEntitySet="SearchResults">
+                <ScalarProperty Name="TweetId" ColumnName="TweetId" />
+                <ScalarProperty Name="JsonTweetElement" ColumnName="JsonTweetElement" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="RetweetCount" ColumnName="RetweetCount" />
+                <ScalarProperty Name="StatusesCount" ColumnName="StatusesCount" />
+                <ScalarProperty Name="FavoritesCount" ColumnName="FavoritesCount" />
+                <ScalarProperty Name="FriendsCount" ColumnName="FriendsCount" />
+                <ScalarProperty Name="FollowersCount" ColumnName="FollowersCount" />
+                <ScalarProperty Name="ScreenName" ColumnName="ScreenName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ResultType" ColumnName="ResultType" />
+                <ScalarProperty Name="Lang" ColumnName="Lang" />
+                <ScalarProperty Name="TweetText" ColumnName="TweetText" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserSearchId" ColumnName="UserSearchId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserSearches">
+            <EntityTypeMapping TypeName="DEV_DB_LICModel.UserSearch">
+              <MappingFragment StoreEntitySet="UserSearch">
+                <ScalarProperty Name="JsonResult" ColumnName="JsonResult" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="QueryText" ColumnName="QueryText" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="DataSourceId" ColumnName="DataSourceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,14 @@
+﻿@model SocialMediaQuery.Models.Results.TwitterSearch
+@{
+    ViewBag.Title = "Instagram Query Results Page";
+}
+
+<div class="jumbotron">
+    <h1>Twitter results for: @Model.Query. Total number of results: @Model.ResultsXml.Length.ToString()</h1>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        @Html.Raw(Model.ResultsXml)
+    </div>
+</div>

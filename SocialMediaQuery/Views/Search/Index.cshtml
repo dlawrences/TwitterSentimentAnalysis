@@ -1,0 +1,41 @@
+﻿@model SocialMediaQuery.Models.Search.Index
+@{
+    ViewBag.Title = "Twitter Sentiment Analysis";
+}
+
+<div class="jumbotron">
+    <h1 class="text-center">Twitter Sentiment Analysis</h1>
+    <p class="lead text-center">Analyzing tweets through machine learning algorithms for social media tracking.</p>
+</div>
+
+@using (Html.BeginForm("RouteToController", "Search", FormMethod.Get, new { id = "searchForm" }))
+{
+<div class="row">
+    <div class="col-lg-3" style="align-content: flex-end">
+        <span class="pull-right">
+            <input type="text" name="query" class="form-control" placeholder="Query text"/>
+        </span>
+    </div>
+    <div class="col-lg-2" style="align-content: flex-end">
+        <span class="pull-right">
+            <input type="number" name="maxNumberOfResults" class="form-control" placeholder="Number of results"/>
+        </span>
+    </div>
+    <div class="col-lg-4">
+        <span class="pull-center">
+            <select name="dataSourceId" class="form-control" id="dataSourceId">
+                <option value="0">Select the social media source...</option>
+                @foreach (var item in Model.DataSources)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }
+            </select>
+        </span>
+    </div>
+    <div class="col-lg-3">
+        <span class="pull-left">
+            <input type="submit" value="Search" id="submitButton" class="btn btn-info btn-flat" />
+        </span>
+    </div>
+</div>
+}
