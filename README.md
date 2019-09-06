@@ -61,7 +61,7 @@ In order to ease the database setup, please use the SQL scripts stored in [datab
 7. Publish the dashboard in a Power BI workspace.
 
 8. Change the **SocialMediaQuery** solution to show your dashboard by editing:
-- **iframe** at line 49 in the **Details.cshtml** file:
+- **iframe object** at line 49 in the **Details.cshtml** file:
 ```
  ...
     <div class="row">
@@ -80,7 +80,7 @@ In order to ease the database setup, please use the SQL scripts stored in [datab
 ...
 ```
 
-9. Change the Redirect Action in the **ResultsController.cs** file to redirect the user after the result are ready to the report at line 171:
+- **report url** at line 171 in the **ResultsController.cs** file:
 ```
 ...
         public ActionResult RedirectToReport()
