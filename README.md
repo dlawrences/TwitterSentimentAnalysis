@@ -89,3 +89,7 @@ In order to ease the database setup, please use the SQL scripts stored in [datab
         }
 ...
 ```
+
+## Shoutout
+
+1. To CodingMag.com (https://www.youtube.com/channel/UC3eBGYprHl6nK29YqNfYYpA) for publishing an open-source solution to connect to social media platforms like Twitter, Instagram, Google+
