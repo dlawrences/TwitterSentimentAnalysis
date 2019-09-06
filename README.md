@@ -55,5 +55,37 @@ In order to ease the database setup, please use the SQL scripts stored in [datab
 
 ### Power BI Setup
 
-Steps
+6. Create a **Power BI Dashboard** like in the following example by connecting to your database:
+![Power BI Dashboard example](media/power-bi-dashboard-example.PNG)
 
+7. Publish the dashboard in a Power BI workspace.
+
+8. Change the **SocialMediaQuery** solution to show your dashboard by editing:
+- **iframe** at line 49 in the **Details.cshtml** file:
+```
+ ...
+    <div class="row">
+        <div class="col-lg-3">
+            <span class="pull-left">
+                <input type="button" value="Go to Report" class="btn btn-info btn-flat" onclick="@("window.location.href='" + @Url.Action("RedirectToReport", "Results") + "'");" />
+            </span>
+        </div>
+    </div>
+
+    <br />
+
+    <iframe width="933" height="700" src="https://app.powerbi.com/view?r=eyJrIjoiMGJlYWZhZjgtMmEyYy00MDVmLThkOTktYTQ3MTg2MzlhNjBhIiwidCI6ImI3MWNlN2IzLTQyM2EtNGQ3ZS1hMjcwLWUwZjdjZjIzNDVmZSIsImMiOjh9" frameborder="0" allowFullScreen="true"></iframe>
+
+    <table class="table">
+...
+```
+
+9. Change the Redirect Action in the **ResultsController.cs** file to redirect the user after the result are ready to the report at line 171:
+```
+...
+        public ActionResult RedirectToReport()
+        {
+            return Redirect("https://app.powerbi.com/groups/me/reports/5ff3f7d9-ee08-444e-a669-5be0f50aa674/ReportSection976e31ccf6b26e138cf5");
+        }
+...
+```
